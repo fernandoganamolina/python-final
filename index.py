@@ -2,12 +2,12 @@
 import requests
 from string import Template
 data=requests.get("https://reqres.in/api/users")
-if data.status_code==200:
+if data.status_code==200: #cheque si conexion a api fue exitosa
     data=data.json()
-    canti=data['per_page']
-    users=data['data']
-    #print(users)
+    canti=data['per_page'] #cantidad de usuarios
+    users=data['data'] #datos de los usuarios
     
+    #crea html para insertar en template
     lista="<main class='m-2' style='display:flex;gap:10px'>\n"
     for num in range(canti):
         ide=users[num]['id']
@@ -15,8 +15,6 @@ if data.status_code==200:
         nom=users[num]['first_name']
         app=users[num]['last_name']
         fot=users[num]['avatar']
-        #print(f"{nom} {app} {ema} {fot}")
-        
         lista+="<div class='card border border-primary border-2'>\n"
         lista+="<div class='card-header bg-primary text-white text-center'>\n"
         lista+="<span style='font-size:0.9em'>"+nom+" "+app+"<span></div>\n"
@@ -26,13 +24,13 @@ if data.status_code==200:
         lista+="</div>\n"
     lista+="</main>\n"
     
-    html=open("index.html")
+    html=open("index.html") #abre html base
     lineas=html.read()
-    temp=Template(lineas)
-    output=temp.substitute(data=lista)
+    temp=Template(lineas) #crea template con contenido base
+    output=temp.substitute(data=lista) #inserta html creado
     
-    html2=open("lista.html","w")
-    html2.write(output)
+    html2=open("lista.html","w") #crea html de salida
+    html2.write(output) #escribe contenido en nuevo html
     html2.close()
     
 else:
